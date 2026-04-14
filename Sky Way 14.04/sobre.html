@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Sky Way</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="32x32">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            display: flex;
+        }
+
+        .main-header {
+            width: 250px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            background-color: #222;
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background-color: #0066cc;
+        }
+
+        .user-area {
+            font-size: 14px;
+            margin-top: auto;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-area:hover {
+            background-color: #333;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            font-size: 15px;
+            color: white;
+        }
+
+        .user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .entrar-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .entrar-btn:hover {
+            background-color: #09c218;
+        }
+
+        .container {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+            padding: 40px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .about-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .about-section h2 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .about-section p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-section ul {
+            margin-left: 20px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .about-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .about-section ul li:before {
+            content: "✓ ";
+            color: #0066cc;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .headquarters {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        .headquarters h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .headquarters p {
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .founders {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .founders h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .founders-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .founder-card {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .founder-card:hover {
+            background-color: #0066cc;
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .founder-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .founder-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .founder-role {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 40px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .partners-list {
+            list-style: none;
+        }
+
+        .partners-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+            color: #ccc;
+        }
+
+        .partners-list li:last-child {
+            border-bottom: none;
+        }
+
+        .partners-list li:before {
+            content: "✓ ";
+            color: #0066cc;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .courses-list {
+            list-style: none;
+        }
+
+        .courses-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .courses-list li:last-child {
+            border-bottom: none;
+        }
+
+        .courses-list li:before {
+            content: "✓ ";
+            color: #0066cc;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background-color: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-size: 24px;
+        }
+
+        .social-links a img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .social-links a.twitter {
+            background-color: #000;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            background-color: #0066cc;
+        }
+
+        .edital-section {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .edital-section p {
+            margin-bottom: 10px;
+        }
+
+        .edital-section a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .edital-section a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <aside class="main-header">
+        <div class="logo">
+            <h2><img src="img/pngegg.png" alt="Sky Way Logo" style="width: 67px; height: auto; vertical-align: middle;"> Sky Way</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="vagas.html" class="nav-link">📋 Vagas</a>
+            <a href="assinatura.html" class="nav-link">🚀 Boost</a>
+            <a href="sobre.html" class="nav-link active">ℹ️ Sobre Nós</a>
+        </nav>
+        
+        <div class="user-area" id="user-area"></div>
+    </aside>
+
+    <div class="container">
+        <div class="content">
+            <header>
+                <h1>📘 Sobre - Sky Way</h1>
+                <p>Sua porta de entrada para as melhores oportunidades de estágio e emprego em TI</p>
+            </header>
+
+            <div class="about-section">
+                <h2>Quem Somos?</h2>
+                <p>A <strong>Sky Way</strong> é uma plataforma inovadora e revolucionária dedicada a conectar talentos em desenvolvimento com as melhores oportunidades de estágio e emprego no setor de Tecnologia da Informação. Fundada em 2023, somos a ponte perfeita entre profissionais ambiciosos e empresas líderes do mercado de tech.</p>
+                
+                <p>Nossa missão é simplificar o processo de busca por oportunidades profissionais, oferecendo uma base de dados atualizada em tempo real com vagas de grandes empresas multinacionais, programas de estágio exclusivos, mentoria de profissionais experientes e recursos educacionais de alto nível.</p>
+                
+                <p>Acreditamos que todos merecem uma chance de brilhar e crescer em suas carreiras. Por isso, criamos um ambiente acolhedor, tecnologicamente avançado e ferramentas poderosas para ajudar você a alcançar seus objetivos profissionais e construir uma carreira de sucesso.</p>
+
+                <h3 style="color: #0066cc; margin-top: 25px; margin-bottom: 15px;">O que oferecemos:</h3>
+                <ul>
+                    <li>Acesso a mais de 5.000 vagas de estágio e emprego atualizadas diariamente</li>
+                    <li>Programa de mentoria com profissionais de empresas como Google, Microsoft e Amazon</li>
+                    <li>Desenvolva suas habilidades com cursos online exclusivos e certificações reconhecidas</li>
+                    <li>Suporte personalizado de nossa equipe de especialistas em carreiras</li>
+                    <li>Acesso a eventos de networking e palestras com líderes do mercado de tecnologia</li>
+                    <li>Ferramentas de análise de perfil para otimizar sua busca por emprego</li>
+                </ul>
+
+                <div class="headquarters">
+                    <h3>📍 Sede Principal</h3>
+                    <p><strong>Sky Way Brasil</strong></p>
+                    <p>Avenida Paulista, 1000 - Bela Vista</p>
+                    <p>São Paulo, SP - 01310-100</p>
+                    <p><strong>Telefone:</strong> (11) 3141-5926</p>
+                    <p><strong>Email:</strong> contato@skyway.com.br</p>
+                    <p style="margin-top: 15px; font-size: 14px; color: #666;">Localizada no coração da região metropolitana de São Paulo, nossa sede fica nas proximidades do Metrô Consolação, proporcionando fácil acesso aos nossos clientes e parceiros.</p>
+                </div>
+            </div>
+
+            <div class="founders">
+                <h2>👥 Nossos Fundadores</h2>
+                <div class="founders-container">
+                    <div class="founder-card">
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+                            <div class="founder-name">Gustavo Eidi</div>
+                            <div class="founder-role">CEO & Co-Fundador</div>
+                        </a>
+                    </div>
+                    <div class="founder-card">
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+                            <div class="founder-name">Pedro Rafael</div>
+                            <div class="founder-role">CTO & Co-Fundador</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🤝 Empresas Parceiras</h3>
+                    <ul class="partners-list">
+                        <li>Max Verstappen Fan Club</li>
+                        <li>Mongo & Loide</li>
+                        <li>Estágiando</li>
+                        <li>Pizza-Net</li>
+                        <li>Clube de Regatas Vasco da Gama</li>
+                        <li>Doulingo</li>
+                        <li>Nubank</li>
+                        <li>Umbrella Corps</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>📚 Cursos Recomendados</h3>
+                    <ul class="courses-list">
+                        <li>Python Avançado</li>
+                        <li>Web Development</li>
+                        <li>Data Science</li>
+                        <li>DevOps</li>
+                        <li>Cloud Computing</li>
+                        <li>Machine Learning</li>
+                        <li>React &amp; Vue.js</li>
+                        <li>Arroz branco soltinho</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>📄 Edital e Oportunidades</h3>
+                    <div class="edital-section">
+                        <p>Confira nossos editais atualizados semanalmente com as melhores vagas de estágio e emprego. Acesse nossa plataforma e filtre por área de interesse, nível de experiência e localização.</p>
+                        <a href="#">Ver Editais →</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>📱 Redes Sociais</h3>
+                    <div class="social-links">
+                        <a href="#" title="Instagram"><img src="img/instagram.png" alt="Instagram"></a>
+                        <a href="#" title="LinkedIn"><img src="img/linkedin.png" alt="LinkedIn"></a>
+                        <a href="#" title="Facebook"><img src="img/facebook.png" alt="Facebook"></a>
+                        <a href="#" title="WhatsApp"><img src="img/whatsapp.png" alt="WhatsApp"></a>
+                        <a href="#" title="Twitter" class="twitter">𝕏</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sky Way. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function getLoggedInUser() {
+            const user = localStorage.getItem('loggedInUser');
+            return user ? JSON.parse(user) : null;
+        }
+
+        const user = getLoggedInUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function renderUser() {
+            const userArea = document.getElementById('user-area');
+            
+            const initials = user.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+
+            userArea.innerHTML = `
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown" id="userDropdown" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                    <button class="entrar-btn" onclick="entrar()">📄 Currículo</button>
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
+            `;
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function entrar() {
+            window.location.href = 'curriculo.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const userArea = document.getElementById('user-area');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userArea.contains(e.target) && dropdown) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        renderUser();
+    </script>
+</body>
+</html>

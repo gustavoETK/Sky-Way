@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Currículo</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="32x32">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            display: flex;
+        }
+
+        .main-header {
+            width: 250px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            background-color: #222;
+        }
+
+        .user-area {
+            font-size: 14px;
+            margin-top: auto;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-area:hover {
+            background-color: #333;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            font-size: 15px;
+            color: white;
+        }
+
+        .user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .container {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section h2 {
+            font-size: 18px;
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .save-btn {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: #0052a3;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+        }
+
+        .add-btn:hover {
+            background-color: #218838;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+
+        .experience-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .curriculum-display {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .curriculum-display.show {
+            display: block;
+        }
+
+        .curriculum-display h2 {
+            color: #0066cc;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .curriculum-display .personal-info {
+            margin-bottom: 20px;
+        }
+
+        .curriculum-display .info-item {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .curriculum-display .info-item strong {
+            color: #0066cc;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 16px;
+            font-weight: bold;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+
+        .notification.removing {
+            animation: slideOut 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <aside class="main-header">
+        <div class="logo">
+            <h2><img src="img/pngegg.png" alt="Sky Way Logo" style="width: 67px; height: auto; vertical-align: middle;"> Sky Way</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="vagas.html" class="nav-link">📋 Vagas</a>
+            <a href="assinatura.html" class="nav-link">🚀 Boost</a>
+            <a href="sobre.html" class="nav-link">ℹ️ Sobre Nós</a>
+        </nav>
+        
+        <div class="user-area" id="user-area"></div>
+    </aside>
+
+    <div class="container">
+        <header>
+            <h1>📄 Meu Currículo</h1>
+<br>
+        <div class="form-container">
+            <form id="curriculumForm">
+                <!-- Informações Pessoais -->
+                <div class="form-section">
+                    <h2>Informações Pessoais</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Nome Completo *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address">
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="summary">Resumo Profissional</label>
+                            <textarea id="summary" placeholder="Descreva seu perfil profissional..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiência Profissional -->
+                <div class="form-section">
+                    <h2>Experiência Profissional</h2>
+                    <div id="experienceContainer"></div>
+                    <button type="button" class="add-btn" onclick="addExperience()">+ Adicionar Experiência</button>
+                </div>
+
+                <!-- Educação -->
+                <div class="form-section">
+                    <h2>Educação</h2>
+                    <div id="educationContainer"></div>
+                    <button type="button" class="add-btn" onclick="addEducation()">+ Adicionar Educação</button>
+                </div>
+
+                <!-- Habilidades -->
+                <div class="form-section">
+                    <h2>Habilidades</h2>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="skills">Digite suas habilidades separadas por vírgula</label>
+                            <textarea id="skills" placeholder="Ex: JavaScript, HTML, CSS, React, Node.js..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="button-group">
+                    <button type="submit" class="save-btn">💾 Salvar Currículo</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Visualização do Currículo -->
+        <div class="curriculum-display" id="curriculumDisplay">
+            <div id="displayContent"></div>
+        </div>
+    </div>
+        </header>
+    <script>
+        const user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+
+        function renderUser() {
+            const userArea = document.getElementById('user-area');
+            const initials = user.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+
+            userArea.innerHTML = `
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                <div class="user-dropdown" id="userDropdown" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
+            `;
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const userArea = document.getElementById('user-area');
+            if (!userArea.contains(e.target)) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown) dropdown.style.display = 'none';
+            }
+        });
+
+        renderUser();
+        loadCurriculumData();
+
+        let experienceCount = 0;
+        let educationCount = 0;
+
+        function addExperience() {
+            const container = document.getElementById('experienceContainer');
+            const id = experienceCount++;
+            
+            const html = `
+                <div class="experience-item" id="exp-${id}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cargo</label>
+                            <input type="text" class="exp-position" data-id="${id}">
+                        </div>
+                        <div class="form-group">
+                            <label>Empresa</label>
+                            <input type="text" class="exp-company" data-id="${id}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data de Início</label>
+                            <input type="date" class="exp-start" data-id="${id}">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Término</label>
+                            <input type="date" class="exp-end" data-id="${id}">
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <textarea class="exp-description" data-id="${id}"></textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeExperience(${id})">Remover</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeExperience(id) {
+            document.getElementById(`exp-${id}`).remove();
+        }
+
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const id = educationCount++;
+            
+            const html = `
+                <div class="experience-item" id="edu-${id}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Instituição</label>
+                            <input type="text" class="edu-institution" data-id="${id}">
+                        </div>
+                        <div class="form-group">
+                            <label>Curso/Grau</label>
+                            <input type="text" class="edu-degree" data-id="${id}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data de Início</label>
+                            <input type="date" class="edu-start" data-id="${id}">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Conclusão</label>
+                            <input type="date" class="edu-end" data-id="${id}">
+                        </div>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeEducation(${id})">Remover</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeEducation(id) {
+            document.getElementById(`edu-${id}`).remove();
+        }
+
+        document.getElementById('curriculumForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveCurriculumData();
+        });
+
+        function saveCurriculumData() {
+            const experience = [];
+            document.querySelectorAll('.experience-item').forEach(item => {
+                const id = item.id.split('-')[1];
+                experience.push({
+                    position: document.querySelector(`.exp-position[data-id="${id}"]`)?.value || '',
+                    company: document.querySelector(`.exp-company[data-id="${id}"]`)?.value || '',
+                    start: document.querySelector(`.exp-start[data-id="${id}"]`)?.value || '',
+                    end: document.querySelector(`.exp-end[data-id="${id}"]`)?.value || '',
+                    description: document.querySelector(`.exp-description[data-id="${id}"]`)?.value || ''
+                });
+            });
+
+            const education = [];
+            document.querySelectorAll('.experience-item').forEach(item => {
+                const id = item.id.split('-')[1];
+                if (item.id.startsWith('edu-')) {
+                    education.push({
+                        institution: document.querySelector(`.edu-institution[data-id="${id}"]`)?.value || '',
+                        degree: document.querySelector(`.edu-degree[data-id="${id}"]`)?.value || '',
+                        start: document.querySelector(`.edu-start[data-id="${id}"]`)?.value || '',
+                        end: document.querySelector(`.edu-end[data-id="${id}"]`)?.value || ''
+                    });
+                }
+            });
+
+            const curriculum = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                summary: document.getElementById('summary').value,
+                experience: experience,
+                education: education,
+                skills: document.getElementById('skills').value
+            };
+
+            localStorage.setItem('curriculum', JSON.stringify(curriculum));
+            showNotification('✓ Currículo salvo com sucesso!');
+            displayCurriculum();
+        }
+
+        function loadCurriculumData() {
+            const curriculum = JSON.parse(localStorage.getItem('curriculum'));
+            if (!curriculum) return;
+
+            document.getElementById('fullName').value = curriculum.fullName || '';
+            document.getElementById('email').value = curriculum.email || '';
+            document.getElementById('phone').value = curriculum.phone || '';
+            document.getElementById('address').value = curriculum.address || '';
+            document.getElementById('summary').value = curriculum.summary || '';
+            document.getElementById('skills').value = curriculum.skills || '';
+
+            curriculum.experience?.forEach(exp => {
+                addExperience();
+                const id = experienceCount - 1;
+                document.querySelector(`.exp-position[data-id="${id}"]`).value = exp.position;
+                document.querySelector(`.exp-company[data-id="${id}"]`).value = exp.company;
+                document.querySelector(`.exp-start[data-id="${id}"]`).value = exp.start;
+                document.querySelector(`.exp-end[data-id="${id}"]`).value = exp.end;
+                document.querySelector(`.exp-description[data-id="${id}"]`).value = exp.description;
+            });
+
+            curriculum.education?.forEach(edu => {
+                addEducation();
+                const id = educationCount - 1;
+                document.querySelector(`.edu-institution[data-id="${id}"]`).value = edu.institution;
+                document.querySelector(`.edu-degree[data-id="${id}"]`).value = edu.degree;
+                document.querySelector(`.edu-start[data-id="${id}"]`).value = edu.start;
+                document.querySelector(`.edu-end[data-id="${id}"]`).value = edu.end;
+            });
+        }
+
+        function displayCurriculum() {
+            const curriculum = JSON.parse(localStorage.getItem('curriculum'));
+            if (!curriculum) return;
+
+            let html = `
+                <div class="personal-info">
+                    <h1>${curriculum.fullName}</h1>
+                    <div class="info-item"><strong>Email:</strong> ${curriculum.email}</div>
+                    <div class="info-item"><strong>Telefone:</strong> ${curriculum.phone}</div>
+                    <div class="info-item"><strong>Endereço:</strong> ${curriculum.address}</div>
+                </div>
+            `;
+
+            if (curriculum.summary) {
+                html += `
+                    <h2>Resumo Profissional</h2>
+                    <div class="info-item">${curriculum.summary}</div>
+                `;
+            }
+
+            if (curriculum.experience?.length > 0) {
+                html += `<h2>Experiência Profissional</h2>`;
+                curriculum.experience.forEach(exp => {
+                    html += `
+                        <div class="info-item">
+                            <strong>${exp.position}</strong> - ${exp.company}<br>
+                            ${exp.start} até ${exp.end || 'Presente'}<br>
+                            ${exp.description}
+                        </div>
+                    `;
+                });
+            }
+
+            if (curriculum.education?.length > 0) {
+                html += `<h2>Educação</h2>`;
+                curriculum.education.forEach(edu => {
+                    html += `
+                        <div class="info-item">
+                            <strong>${edu.degree}</strong> - ${edu.institution}<br>
+                            ${edu.start} até ${edu.end}
+                        </div>
+                    `;
+                });
+            }
+
+            if (curriculum.skills) {
+                html += `
+                    <h2>Habilidades</h2>
+                    <div class="info-item">${curriculum.skills.split(',').map(s => s.trim()).join(' • ')}</div>
+                `;
+            }
+
+            document.getElementById('displayContent').innerHTML = html;
+            document.getElementById('curriculumDisplay').classList.add('show');
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('removing');
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

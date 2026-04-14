@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos de Assinatura - Sky Way</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="32x32">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            display: flex;
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .main-header {
+            width: 250px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background-color: #222;
+        }
+
+        .user-area {
+            font-size: 14px;
+            margin-top: auto;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-area:hover {
+            background-color: #333;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            font-size: 15px;
+            color: white;
+        }
+
+        .user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .entrar-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .entrar-btn:hover {
+            background-color: #09c218;
+        }
+
+        /* ==================== CONTEÚDO PRINCIPAL ==================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .header-subtitle {
+            color: #666;
+            font-size: 17px;
+        }
+
+        .plans-section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            margin: 50px 0 30px 0;
+            text-align: center;
+        }
+
+        .plans-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .plan-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .plan-header {
+            padding: 35px 25px;
+            text-align: center;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .plan-name {
+            font-size: 23px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 6px;
+        }
+
+        .plan-period {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .plan-body {
+            padding: 30px 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 35px;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            padding: 13px 0;
+            color: #555;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #0066cc;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff316f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+
+        .subscribe-btn:hover {
+            background-color: #09c218;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .main-header {
+                position: static;
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 15px 20px;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar - Padrão unificado -->
+    <aside class="main-header">
+        <div class="logo">
+            <h2><img src="img/pngegg.png" alt="Sky Way Logo" style="width: 67px; height: auto; vertical-align: middle;"> Sky Way</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link">🏠 Home</a>
+            <a href="vagas.html" class="nav-link">📋 Vagas</a>
+            <a href="assinatura.html" class="nav-link active">🚀 Boost</a>
+            <a href="sobre.html" class="nav-link">ℹ️ Sobre Nós</a>
+        </nav>
+
+        <div class="user-area" id="user-area"></div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <header>
+            <h1>🚀 Planos de Assinatura</h1>
+            <p class="header-subtitle">Escolha o plano perfeito para impulsionar sua carreira</p>
+        </header>
+
+        <h2 class="plans-section-title">Planos Padrão</h2>
+        <div class="plans-wrapper">
+            <!-- Plano Standard -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <div class="plan-name">Standard</div>
+                    <div class="plan-price">R$ 19,90</div>
+                    <div class="plan-period">/mês</div>
+                </div>
+                <div class="plan-body">
+                    <ul class="features-list">
+                        <li>Acesso a todas as vagas</li>
+                        <li>Candidaturas ilimitadas</li>
+                        <li>Filtros básicos de busca</li>
+                        <li>Perfil profissional</li>
+                        <li>Histórico de candidaturas</li>
+                    </ul>
+                    <button class="subscribe-btn">Assinar Agora</button>
+                </div>
+            </div>
+
+            <!-- Plano Professional -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <div class="plan-name">Professional</div>
+                    <div class="plan-price">R$ 49,90</div>
+                    <div class="plan-period">/mês</div>
+                </div>
+                <div class="plan-body">
+                    <ul class="features-list">
+                        <li>Tudo do plano Standard</li>
+                        <li>Candidaturas com prioridade</li>
+                        <li>Filtros avançados</li>
+                        <li>Alertas de novas vagas</li>
+                        <li>Suporte por email</li>
+                        <li>CV em destaque</li>
+                    </ul>
+                    <button class="subscribe-btn">Assinar Agora</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="plans-section-title">Planos Premium</h2>
+        <div class="plans-wrapper">
+            <!-- Plano Premium -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <div class="plan-name">Premium</div>
+                    <div class="plan-price">R$ 99,90</div>
+                    <div class="plan-period">/mês</div>
+                </div>
+                <div class="plan-body">
+                    <ul class="features-list">
+                        <li>Tudo do plano Professional</li>
+                        <li>Profile boost mensal</li>
+                        <li>Entrevistas simuladas</li>
+                        <li>Mentoria com recrutadores</li>
+                        <li>Análise de CV completa</li>
+                        <li>Prioridade no atendimento</li>
+                        <li>Certificados de cursos</li>
+                    </ul>
+                    <button class="subscribe-btn">Assinar Agora</button>
+                </div>
+            </div>
+
+            <!-- Plano Enterprise -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <div class="plan-name">Enterprise</div>
+                    <div class="plan-price">R$ 199,90</div>
+                    <div class="plan-period">/mês</div>
+                </div>
+                <div class="plan-body">
+                    <ul class="features-list">
+                        <li>Tudo do plano Premium</li>
+                        <li>Acesso VIP exclusivo</li>
+                        <li>Oportunidades personalizadas</li>
+                        <li>Consultoria de carreira</li>
+                        <li>Networking com empresas</li>
+                        <li>Prioridade absoluta</li>
+                        <li>Suporte 24/7 dedicado</li>
+                        <li>Garantia de oportunidade</li>
+                    </ul>
+                    <button class="subscribe-btn">Assinar Agora</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getLoggedInUser() {
+            const user = localStorage.getItem('loggedInUser');
+            return user ? JSON.parse(user) : null;
+        }
+
+        const user = getLoggedInUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function renderUser() {
+            const userArea = document.getElementById('user-area');
+            
+            // Gera as iniciais do nome
+            const initials = user.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+
+            userArea.innerHTML = `
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown" id="userDropdown" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                    <button class="entrar-btn" onclick="entrar()">📄 Currículo</button>
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
+            `;
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function entrar() {
+            window.location.href = 'curriculo.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const userArea = document.getElementById('user-area');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userArea.contains(e.target) && dropdown) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        renderUser();
+
+        // Clique nos botões de assinatura
+        document.querySelectorAll('.subscribe-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const planName = this.closest('.plan-card').querySelector('.plan-name').textContent;
+                alert(`✅ Redirecionando para o pagamento do plano ${planName}...`);
+            });
+        });
+    </script>
+</body>
+</html>

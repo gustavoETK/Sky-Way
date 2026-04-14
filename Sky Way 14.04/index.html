@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Seleção de Vagas</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="32x32">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            display: flex;
+        }
+
+        .main-header {
+            width: 250px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #ccc;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            background-color: #222;
+        }
+
+        .user-area {
+            font-size: 14px;
+            margin-top: auto;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-area:hover {
+            background-color: #333;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            font-size: 15px;
+            color: white;
+        }
+
+        .user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .entrar-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .entrar-btn:hover {
+            background-color: #09c218;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .filter-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .toggle-filters-btn {
+            padding: 14px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-filters-btn:hover {
+            background-color: #0052a3;
+        }
+
+        .filter-panel {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+
+        .filter-panel.active {
+            display: flex;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            margin: 0;
+            color: #333;
+        }
+
+        .jobs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .job-type {
+            display: inline-block;
+            background-color: #e8f0fe;
+            color: #0066cc;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .company-name {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .job-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .job-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .salary {
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .apply-btn:hover {
+            background-color: #0052a3;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #0066cc;
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 16px;
+            font-weight: bold;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+
+        .notification.removing {
+            animation: slideOut 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <aside class="main-header">
+        <div class="logo">
+            <h2><img src="img/pngegg.png" alt="Sky Way Logo" style="width: 67px; height: auto; vertical-align: middle;"> Sky Way</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link active">🏠 Home</a>
+            <a href="vagas.html" class="nav-link">📋 Vagas</a>
+            <a href="assinatura.html" class="nav-link">🚀 Boost</a>
+            <a href="sobre.html" class="nav-link">ℹ️ Sobre Nós</a>
+        </nav>
+        
+        <!-- Área do usuário com avatar -->
+        <div class="user-area" id="user-area"></div>
+    </aside>
+
+    <div class="container">
+
+        <div class="filter-container">
+        <header>
+            <h1>🌟 Sua nova carreira com vagas Internacionais</h1>
+            <p>Descubra oportunidades globais para impulsionar sua carreira</p>
+        </header>
+            <div class="search-group">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar por título, empresa ou tipo de vaga...">
+                <button class="toggle-filters-btn" onclick="toggleFilterPanel()">🔍 Filtros</button>
+            </div>
+
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-all" value="all" checked>
+                    <label for="filter-all">Todas as vagas</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-emprego" value="emprego">
+                    <label for="filter-emprego">💼 Emprego</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-estagio" value="estágio">
+                    <label for="filter-estagio">📚 Estágio</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-aprendiz" value="jovem aprendiz">
+                    <label for="filter-aprendiz">🎓 Jovem Aprendiz</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-freelancer" value="freelancer">
+                    <label for="filter-freelancer">🚀 Freelancer</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="jobs-container" id="jobsContainer"></div>
+    </div>
+
+    <script>
+        function getLoggedInUser() {
+            const user = localStorage.getItem('loggedInUser');
+            return user ? JSON.parse(user) : null;
+        }
+
+        const user = getLoggedInUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function renderUser() {
+            const userArea = document.getElementById('user-area');
+            
+            // Gera as iniciais do nome
+            const initials = user.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);   // máximo 2 letras
+
+            userArea.innerHTML = `
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown" id="userDropdown" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                    <button class="entrar-btn" onclick="entrar()">📄 Currículo</button>
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
+            `;
+        }
+
+        // Função para abrir/fechar o menu do usuário
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function entrar() {
+            window.location.href = 'curriculo.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', function(e) {
+            const userArea = document.getElementById('user-area');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userArea.contains(e.target) && dropdown) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Inicializa
+        renderUser();
+
+        const companies = ['Tech Solutions', 'Inovação Digital', 'StartUp XYZ', 'Empresa Geral', 'Consultoria Plus', 
+                           'Sistema Global', 'Apps Móvel', 'Cloud Services', 'Web Developers', 'Design Studio',
+                           'Data Analytics','Umbrella Corp', 'Wayne Enterprises', 'Stark Industries', 'Oscorp', 'Cyberdyne Systems', 'Tyrell Corporation',
+                           'Arasaka Corporation', 'InGen', 'Wonka Industries', 'Gekko & Co', 'Duff Beer', 'Acme Corporation', 'Globex Corporation',
+                           'Soylent Corporation', 'Vandelay Industries', 'Hoyoverse', 'Gaijin Entertainment'
+                        ];
+
+        const jobTitles = {
+            'emprego': ['Desenvolvedor Full Stack', 'Gerente de Projetos', 'Analista de Sistemas', 'Desenvolvedora Frontend', 'Tech Lead', 'Consultor de TI', 'Engenheiro de Software', 'Especialista em Segurança', 'Administrador de Banco de Dados', 'Arquiteto de Soluções'],
+            'estágio': ['Estagiário em Desenvolvimento', 'Estagiário em TI', 'Estagiário em Análise', 'Estagiário em Suporte Técnico', 'Estagiário em Design', 'Estagiário em Backend'],
+            'jovem aprendiz': ['Aprendiz em TI', 'Aprendiz em Administração', 'Consultor de Graficos', 'Assistente de Suporte', 'Auxiliar de Programação'],
+            'freelancer': ['Desenvolvedor Freelancer', 'Designer Gráfico', 'Programador Especialista', 'Consultor de TI', 'Redator Técnico', 'Tecnico de Suporte Freelancer']
+        };
+
+        const descriptions = [
+            "Atuação em projetos de alto impacto com foco em tecnologias modernas.",
+            "Oportunidade para profissionais motivados em um ambiente inovador e colaborativo.",
+            "Buscamos alguém com perfil proativo para integrar nosso time de especialistas.",
+            "Foco em entrega de valor e desenvolvimento de soluções escaláveis.",
+            "Trabalhe em um ambiente flexível com grandes possibilidades de crescimento.",
+            "Participe da criação de produtos que impactam milhares de usuários diariamente.",
+            "Busca-se talento com vontade de aprender e crescer em um ambiente dinâmico.",
+            "Preferência por candidatos com paixão por tecnologia e inovação.",
+            "Vaga para quem deseja se desenvolver em um ambiente de alta performance.",
+            "Oportunidade para quem quer fazer a diferença em projetos desafiadores e inovadores.",
+            "Focamos em pessoas que buscam crescimento profissional e aprendizado contínuo.",
+            "Queremos profissionais que se destacam pela criatividade e capacidade de resolver problemas complexos.",
+            "Nossa equipe valoriza a diversidade e a inclusão, buscando talentos de diferentes perfis e experiências.",
+            "Nossa empresa é reconhecida por oferecer um ambiente de trabalho estimulante e oportunidades de desenvolvimento para seus colaboradores.",
+            "Queremos pessoas que se destacam pela paixão por tecnologia e vontade de aprender constantemente.",
+            "Desejamos profissionais que se destacam pela criatividade, proatividade e capacidade de trabalhar em equipe.",
+            "Preferimos candidatos que buscam crescimento profissional e aprendizado contínuo, valorizando a diversidade e a inclusão.",
+            "Precisamos de pessoas que se destacam pela paixão por tecnologia, vontade de aprender e capacidade de resolver problemas complexos.",
+            "Vaga para quem busca desafios técnicos e aprendizado constante."
+        ];
+
+        function generateJobs() {
+            let jobs = [];
+            let id = 1;
+
+            ['emprego', 'estágio', 'jovem aprendiz', 'freelancer'].forEach(type => {
+                for (let i = 0; i < 22; i++) {
+                    const salary = type === 'emprego' ? 'R$ 3.700 - R$ 9.600' : 
+                                   type === 'estágio' ? 'R$ 1.100 - R$ 1.670' : 
+                                   type === 'jovem aprendiz' ? 'R$ 590 - R$ 1.158' : 'R$ 1.090 - R$ 1.459' ; 
+
+                    jobs.push({
+                        id: id++,
+                        type: type,
+                        title: jobTitles[type][Math.floor(Math.random() * jobTitles[type].length)],
+                        company: companies[Math.floor(Math.random() * companies.length)],
+                        description: descriptions[Math.floor(Math.random() * descriptions.length)],
+                        salary: salary,
+                        date: `${Math.floor(Math.random() * 20) + 1} dias atrás`
+                    });
+                }
+            });
+
+            return jobs;
+        }
+
+        const jobs = generateJobs();
+
+        function toggleFilterPanel() {
+            document.getElementById('filterPanel').classList.toggle('active');
+        }
+
+        function handleFilterChange(changedCheckbox) {
+            const allCheckbox = document.getElementById('filter-all');
+            const otherCheckboxes = document.querySelectorAll('.filter-panel input[type="checkbox"]:not(#filter-all)');
+
+            if (changedCheckbox.id === 'filter-all') {
+                if (allCheckbox.checked) {
+                    otherCheckboxes.forEach(cb => cb.checked = false);
+                }
+            } else {
+                const anyOtherChecked = Array.from(otherCheckboxes).some(cb => cb.checked);
+
+                if (anyOtherChecked) {
+                    allCheckbox.checked = false;
+                } else {
+                    allCheckbox.checked = true;
+                }
+            }
+
+            applyFilters();
+        }
+
+        function getSelectedFilters() {
+            const checked = document.querySelectorAll('.filter-panel input[type="checkbox"]:checked');
+            const values = Array.from(checked).map(cb => cb.value);
+
+            if (values.includes('all') || values.length === 0) {
+                return null; 
+            }
+            return values;
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selectedFilters = getSelectedFilters();
+
+            renderJobs(searchTerm, selectedFilters);
+        }
+
+        function renderJobs(searchTerm = '', selectedFilters = null) {
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = '';
+
+            let filteredJobs = jobs;
+
+            if (selectedFilters) {
+                filteredJobs = filteredJobs.filter(job => selectedFilters.includes(job.type));
+            }
+
+            if (searchTerm) {
+                filteredJobs = filteredJobs.filter(job =>
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.description.toLowerCase().includes(searchTerm) ||
+                    job.type.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (filteredJobs.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                    Nenhuma vaga encontrada com os filtros selecionados.
+                </p>`;
+                return;
+            }
+
+            filteredJobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = `job-card`;
+                jobCard.innerHTML = `
+                    <div class="job-type">${job.type.toUpperCase()}</div>
+                    <div class="job-title">${job.title}</div>
+                    <div class="company-name">${job.company}</div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-info">
+                        <span class="salary">${job.salary}</span>
+                        <span class="date">${job.date}</span>
+                    </div>
+                    <button class="apply-btn" onclick="applyJob('${job.title}')">Candidatar-se</button>
+                `;
+                container.appendChild(jobCard);
+            });
+        }
+
+        function applyJob(jobTitle) {
+            const random = Math.floor(Math.random() * (981 - 22 + 1)) + 22;
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `✓ Candidatura enviada para ${jobTitle}!<br>Sua posição na fila é #${random}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('removing');
+                setTimeout(() => notification.remove(), 400);
+            }, 3500);
+        }
+
+        document.querySelectorAll('.filter-panel input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                handleFilterChange(checkbox);
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('filterPanel');
+            const btn = document.querySelector('.toggle-filters-btn');
+            if (!panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        renderJobs();
+    </script>
+</body>
+</html>

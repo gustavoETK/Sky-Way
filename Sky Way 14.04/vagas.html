@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vagas de TI - Sky Way</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="32x32">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .main-header {
+            width: 250px;
+            height: 100vh;
+            background: #111;
+            color: white;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .logo h2 { font-size: 24px; }
+        .nav-menu { display: flex; flex-direction: column; gap: 15px; }
+        .nav-link {
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .nav-link:hover { background: #222; color: white; }
+
+        .user-area {
+            font-size: 14px;
+            margin-top: auto;
+            padding: 15px;
+            background-color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-area:hover {
+            background-color: #333;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            font-size: 15px;
+            color: white;
+        }
+
+        .user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .entrar-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .entrar-btn:hover {
+            background-color: #09c218;
+        }
+
+        /* Conteúdo principal */
+        .container {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            max-width: 1200px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        h1 { color: #333; margin-bottom: 10px; }
+
+        /* Filtro - estilo parecido com o primeiro código */
+        .filter-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+
+        .toggle-filters-btn {
+            padding: 14px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter-panel {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+
+        .filter-panel.active { display: flex; }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+        }
+
+        .jobs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .job-type {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e8f0fe;
+            color: #0066cc;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .company-name {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .job-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .job-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .salary { font-weight: bold; color: #0066cc; }
+        .date { color: #999; }
+
+        .apply-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .apply-btn:hover { background: #0052a3; }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px;
+            color: #777;
+            font-size: 18px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #0066cc;
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="main-header">
+        <div class="logo">
+            <h2><img src="img/pngegg.png" alt="Sky Way Logo" style="width: 67px; height: auto; vertical-align: middle;"> Sky Way</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-link active">🏠 Home</a>
+            <a href="vagas.html" class="nav-link">📋 Vagas</a>
+            <a href="assinatura.html" class="nav-link">🚀 Boost</a>
+            <a href="sobre.html" class="nav-link">ℹ️ Sobre Nós</a>
+        </nav>
+        <div class="user-area" id="user-area"></div>
+    </aside>
+
+    <div class="container">
+
+        <div class="filter-container">
+        <header>
+            <h1>🔍 Vagas em TI</h1>
+            <p>Encontre as melhores oportunidades para sua carreira, dentro da sua região</p>
+        </header>
+            <div class="search-group">
+                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar por palavra-chave, cargo ou empresa...">
+                <button class="toggle-filters-btn" onclick="toggleFilterPanel()">🔽 Filtros</button>
+            </div>
+            
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-all" value="all" checked>
+                    <label for="filter-all">Todas as Vagas</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-junior" value="junior">
+                    <label for="filter-junior">Junior</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-pleno" value="pleno">
+                    <label for="filter-pleno">Pleno</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="filter-senior" value="senior">
+                    <label for="filter-senior">Sênior</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="jobs-container" id="jobsContainer"></div>
+    </div>
+
+    <script>
+        // ==================== LOCAIS ALEATÓRIOS EM SÃO PAULO ====================
+        const spLocations = [
+            "Centro, SP",
+            "Suzano, SP",
+            "Mogi das Cruzes, SP",
+            "Poá, SP",
+            "Itaquera, SP",
+            "Itaquaquecetuba, SP",
+            "Guarulhos, SP",
+            "São Bernardo do Campo, SP",
+            "Santo André, SP",
+            "Mauá, SP",
+            "São Caetano do Sul, SP",
+            "Diadema, SP",
+            "Osasco, SP",
+            "Zona Norte, SP",
+            "Zona Sul, SP",
+            "Zona Leste, SP",
+            "Zona Oeste, SP",
+            "Vila Mariana, SP",
+            "Pinheiros, SP",
+            "Consolação, SP",
+            "Bela Vista, SP",
+            "Santana, SP",
+            "Vila Madalena, SP",
+            "Tatuapé, SP",
+            "Itaim Bibi, SP",
+            "Perdizes, SP"
+        ];
+
+        function getRandomLocation() {
+            return spLocations[Math.floor(Math.random() * spLocations.length)];
+        }
+
+// ==================== CONTROLE DE USUÁRIO ====================
+        function getLoggedInUser() {
+            const user = localStorage.getItem('loggedInUser');
+            return user ? JSON.parse(user) : null;
+        }
+
+        const user = getLoggedInUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function renderUser() {
+            const userArea = document.getElementById('user-area');
+            
+            // Gera as iniciais do nome
+            const initials = user.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+
+            userArea.innerHTML = `
+                <div class="user-menu" onclick="toggleUserMenu()">
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown" id="userDropdown" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                    <button class="entrar-btn" onclick="entrar()">📄 Currículo</button>
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
+            `;
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function entrar() {
+            window.location.href = 'curriculo.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const userArea = document.getElementById('user-area');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userArea.contains(e.target) && dropdown) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        renderUser();
+
+        // ==================== DADOS DAS VAGAS ====================
+        const jobs = [
+            {
+                id: 1,
+                title: "Desenvolvedor Frontend Junior",
+                company: "Tech Solutions Brasil",
+                category: "junior",
+                type: "Junior",
+                description: "Buscamos um desenvolvedor frontend junior com conhecimentos em HTML, CSS e JavaScript.",
+                salary: "R$ 3.000 - R$ 4.500",
+                location: "Centro, SP",
+                date: "2 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 2,
+                title: "Desenvolvedor Backend Pleno",
+                company: "Inovação Digital",
+                category: "pleno",
+                type: "Pleno",
+                description: "Procuramos um desenvolvedor backend com experiência em Node.js e bancos de dados.",
+                salary: "R$ 6.000 - R$ 8.000",
+                location: "Zona Norte, SP",
+                date: "1 dia atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 3,
+                title: "DevOps Sênior",
+                company: "Cloud Connect",
+                category: "senior",
+                type: "Sênior",
+                description: "Profissional experiente em DevOps com conhecimento em AWS, Docker e Kubernetes.",
+                salary: "R$ 10.000 - R$ 15.000",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 4,
+                title: "Analista Junior",
+                company: "Data Systems",
+                category: "junior",
+                type: "Junior",
+                description: "Analista de sistemas junior para suporte e manutenção de aplicações web.",
+                salary: "R$ 2.500 - R$ 3.500",
+                location: getRandomLocation(),
+                date: "5 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 5,
+                title: "Full Stack Pleno",
+                company: "StartUp XYZ",
+                category: "pleno",
+                type: "Pleno",
+                description: "Desenvolvedor full stack com experiência em React e backend em Python.",
+                salary: "R$ 7.000 - R$ 9.000",
+                location: getRandomLocation(),
+                date: "4 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 6,
+                title: "Arquiteto de Software Sênior",
+                company: "Enterprise Solutions",
+                category: "senior",
+                type: "Sênior",
+                description: "Arquiteto experiente para desenhar soluções e liderar equipes de desenvolvimento.",
+                salary: "R$ 12.000 - R$ 18.000",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 7,
+                title: "Desenvolvedor Frontend Junior",
+                company: "WebDev Studio",
+                category: "junior",
+                type: "Junior",
+                description: "HTML, CSS e JavaScript para projetos web modernos.",
+                salary: "R$ 3.200 - R$ 4.200",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 8,
+                title: "Suporte Técnico Junior",
+                company: "Tech Support Plus",
+                category: "junior",
+                type: "Junior",
+                description: "Suporte técnico para usuários de sistemas internos.",
+                salary: "R$ 2.800 - R$ 3.800",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 9,
+                title: "Programador Junior Python",
+                company: "Python Experts",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento em Python com foco em automação.",
+                salary: "R$ 3.500 - R$ 4.500",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 10,
+                title: "QA Junior",
+                company: "Quality Assurance Lab",
+                category: "junior",
+                type: "Junior",
+                description: "Testes manuais e automação de testes para aplicações web.",
+                salary: "R$ 3.000 - R$ 4.000",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 11,
+                title: "Desenvolvedor Mobile Junior",
+                company: "Mobile Apps Inc",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento Android com Java e Kotlin.",
+                salary: "R$ 3.300 - R$ 4.300",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 12,
+                title: "Estagiário Desenvolvedor",
+                company: "Innovation Lab",
+                category: "junior",
+                type: "Junior",
+                description: "Estágio em desenvolvimento web com mentoria.",
+                salary: "R$ 1.500 - R$ 2.500",
+                location: getRandomLocation(),
+                date: "4 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 13,
+                title: "Assistente de TI Junior",
+                company: "IT Services Brasil",
+                category: "junior",
+                type: "Junior",
+                description: "Assistente para manutenção de infraestrutura de TI.",
+                salary: "R$ 2.600 - R$ 3.600",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 14,
+                title: "Desenvolvedor React Junior",
+                company: "React Masters",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento de interfaces com React.js.",
+                salary: "R$ 3.400 - R$ 4.400",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 15,
+                title: "Desenvolvedor Vue Junior",
+                company: "Vue Solutions",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento frontend com Vue.js.",
+                salary: "R$ 3.100 - R$ 4.100",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 16,
+                title: "Programador C# Junior",
+                company: "C Sharp Dev",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento desktop com C# e .NET.",
+                salary: "R$ 3.300 - R$ 4.300",
+                location: getRandomLocation(),
+                date: "5 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 17,
+                title: "Desenvolvedor Java Junior",
+                company: "Java Innovations",
+                category: "junior",
+                type: "Junior",
+                description: "Desenvolvimento backend com Java Spring Boot.",
+                salary: "R$ 3.600 - R$ 4.600",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 18,
+                title: "Web Designer Junior",
+                company: "Design Digital",
+                category: "junior",
+                type: "Junior",
+                description: "Designer web com conhecimento em UX/UI.",
+                salary: "R$ 2.800 - R$ 3.800",
+                location: getRandomLocation(),
+                date: "4 dias atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 19,
+                title: "DBA Junior",
+                company: "Database Systems",
+                category: "junior",
+                type: "Junior",
+                description: "Administrador de banco de dados Junior.",
+                salary: "R$ 3.200 - R$ 4.200",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["junior"]
+            },
+            {
+                id: 20,
+                title: "Desenvolvedor Frontend Pleno",
+                company: "Digital Agency",
+                category: "pleno",
+                type: "Pleno",
+                description: "React, Vue ou Angular com experiência em APIs REST.",
+                salary: "R$ 6.500 - R$ 8.500",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 21,
+                title: "Desenvolvedor Backend Pleno",
+                company: "Software House Pro",
+                category: "pleno",
+                type: "Pleno",
+                description: "Node.js, Python ou Java com banco de dados relacional.",
+                salary: "R$ 7.000 - R$ 9.000",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 22,
+                title: "Full Stack Pleno",
+                company: "Tech Startup",
+                category: "pleno",
+                type: "Pleno",
+                description: "Experiência em frontend e backend moderno.",
+                salary: "R$ 7.500 - R$ 9.500",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 23,
+                title: "Desenvolvedor Mobile Pleno",
+                company: "Mobile First Co",
+                category: "pleno",
+                type: "Pleno",
+                description: "Android e iOS com experiência em aplicações nativas.",
+                salary: "R$ 7.000 - R$ 9.000",
+                location: getRandomLocation(),
+                date: "4 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 24,
+                title: "QA Pleno",
+                company: "Quality Experts",
+                category: "pleno",
+                type: "Pleno",
+                description: "Testes automatizados e gestão de qualidade.",
+                salary: "R$ 6.000 - R$ 8.000",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 25,
+                title: "DevOps Pleno",
+                company: "Infrastructure Co",
+                category: "pleno",
+                type: "Pleno",
+                description: "AWS, Docker, Kubernetes e CI/CD.",
+                salary: "R$ 8.000 - R$ 10.000",
+                location: getRandomLocation(),
+                date: "5 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 26,
+                title: "Engenheiro de Dados Pleno",
+                company: "Big Data Solutions",
+                category: "pleno",
+                type: "Pleno",
+                description: "Pipelines de dados com Spark e Hadoop.",
+                salary: "R$ 8.000 - R$ 10.000",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 27,
+                title: "Desenvolvedor Shopify Pleno",
+                company: "E-commerce Plus",
+                category: "pleno",
+                type: "Pleno",
+                description: "Desenvolvimento e customização em Shopify.",
+                salary: "R$ 6.500 - R$ 8.500",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 28,
+                title: "Tech Lead Pleno",
+                company: "Tech Innovation",
+                category: "pleno",
+                type: "Pleno",
+                description: "Liderança técnica de equipe de desenvolvimento.",
+                salary: "R$ 9.000 - R$ 11.000",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["pleno"]
+            },
+            {
+                id: 29,
+                title: "Arquiteto de Soluções Sênior",
+                company: "Enterprise Tech",
+                category: "senior",
+                type: "Sênior",
+                description: "Desenho de arquitetura para grandes projetos.",
+                salary: "R$ 13.000 - R$ 19.000",
+                location: getRandomLocation(),
+                date: "1 dia atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 30,
+                title: "Tech Lead Sênior",
+                company: "Leadership Plus",
+                category: "senior",
+                type: "Sênior",
+                description: "Liderança e mentoria de equipes técnicas.",
+                salary: "R$ 12.000 - R$ 17.000",
+                location: getRandomLocation(),
+                date: "3 dias atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 31,
+                title: "Diretor de Tecnologia",
+                company: "Tech Directors",
+                category: "senior",
+                type: "Sênior",
+                description: "Gestão estratégica de tecnologia e inovação.",
+                salary: "R$ 15.000 - R$ 22.000",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 32,
+                title: "Engenheiro Cloud Sênior",
+                company: "Cloud Architects",
+                category: "senior",
+                type: "Sênior",
+                description: "Arquitetura cloud escalável e segura.",
+                salary: "R$ 13.000 - R$ 18.000",
+                location: getRandomLocation(),
+                date: "4 dias atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 33,
+                title: "CTO",
+                company: "StartUp Unicorn",
+                category: "senior",
+                type: "Sênior",
+                description: "Chief Technology Officer para startup em crescimento.",
+                salary: "R$ 16.000 - R$ 25.000",
+                location: getRandomLocation(),
+                date: "5 dias atrás",
+                keywords: ["senior"]
+            },
+            {
+                id: 34,
+                title: "Especialista em Segurança Sênior",
+                company: "Cybersecurity Pro",
+                category: "senior",
+                type: "Sênior",
+                description: "Segurança da informação e compliance.",
+                salary: "R$ 14.000 - R$ 20.000",
+                location: getRandomLocation(),
+                date: "2 dias atrás",
+                keywords: ["senior"]
+            }
+        ];
+
+// ==================== FUNÇÕES DE FILTRO ====================
+        function toggleFilterPanel() {
+            document.getElementById('filterPanel').classList.toggle('active');
+        }
+
+        function handleFilterChange(changed) {
+            const all = document.getElementById('filter-all');
+            const others = document.querySelectorAll('.filter-panel input:not(#filter-all)');
+
+            if (changed.id === 'filter-all') {
+                if (all.checked) others.forEach(cb => cb.checked = false);
+            } else {
+                const anyChecked = Array.from(others).some(cb => cb.checked);
+                all.checked = !anyChecked;
+            }
+            applyFilters();
+        }
+
+        function getSelectedFilters() {
+            const checked = Array.from(document.querySelectorAll('.filter-panel input:checked')).map(cb => cb.value);
+            return (checked.includes('all') || checked.length === 0) ? null : checked;
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selected = getSelectedFilters();
+            renderJobs(searchTerm, selected);
+        }
+
+        function renderJobs(searchTerm = '', selectedFilters = null) {
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = '';
+
+            let filtered = jobs;
+
+            if (selectedFilters) {
+                filtered = filtered.filter(job => selectedFilters.includes(job.category));
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(job => 
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.description.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="no-results">Nenhuma vaga encontrada.</p>`;
+                return;
+            }
+
+            filtered.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                const location = job.location || getRandomLocation();
+                card.innerHTML = `
+                    <div class="job-type">${job.type}</div>
+                    <div class="job-title">${job.title}</div>
+                    <div class="company-name">${job.company}</div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-info">
+                        <span class="salary">${job.salary}</span>
+                        <span class="date">${job.date}</span>
+                    </div>
+                    <div style="color: #999; font-size: 14px; margin-bottom: 15px;">📍 ${location}</div>
+                    <button class="apply-btn" onclick="applyJob('${job.title}', '${job.company}')">Candidatar-se</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function applyJob(title, company) {
+            const num = Math.floor(Math.random() * 960) + 22;
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.innerHTML = `✓ Candidatura enviada para ${company}!<br>Posição na fila: #${num}`;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.classList.add('removing');
+                setTimeout(() => notif.remove(), 400);
+            }, 3500);
+        }
+
+        // Eventos
+        document.querySelectorAll('.filter-panel input').forEach(cb => {
+            cb.addEventListener('change', () => handleFilterChange(cb));
+        });
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // Fechar painel ao clicar fora
+        document.addEventListener('click', e => {
+            const panel = document.getElementById('filterPanel');
+            const btn = document.querySelector('.toggle-filters-btn');
+            if (!panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        // Iniciar
+        renderJobs();
+    </script>
+</body>
+</html>
