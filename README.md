@@ -94,10 +94,6 @@ Sky-Way-main/
     │   ├── linkedin.png
     │   ├── whatsapp.png
     │   └── Rickrolling_QR_code.png # Easter egg nos perfis dos fundadores 🥚
-    ├── style/
-    │   └── style.scss      # Arquivo de estilos SCSS (base)
-    └── templat/
-        └── theme.js        # Gerenciador de tema claro/escuro
 ```
 
 ---
@@ -119,18 +115,6 @@ Abra o arquivo `login.html` diretamente no navegador. Como o projeto usa `localS
 Com VS Code + extensão Live Server:
 ```
 Clique com botão direito em login.html → "Open with Live Server"
-```
-
-Com Python:
-```bash
-cd "Sky Way 14.04"
-python -m http.server 8000
-# Acesse: http://localhost:8000/login.html
-```
-
-Com Node.js:
-```bash
-npx serve "Sky Way 14.04"
 ```
 
 ### Primeiro acesso
@@ -289,10 +273,6 @@ Sky-Way-main/
     │   ├── linkedin.png
     │   ├── whatsapp.png
     │   └── Rickrolling_QR_code.png # Easter egg in founder profiles 🥚
-    ├── style/
-    │   └── style.scss      # Base SCSS stylesheet
-    └── templat/
-        └── theme.js        # Light/dark theme manager
 ```
 
 ---
@@ -314,18 +294,6 @@ Open `login.html` directly in your browser. Since the project uses `localStorage
 With VS Code + Live Server extension:
 ```
 Right-click login.html → "Open with Live Server"
-```
-
-With Python:
-```bash
-cd "Sky Way 14.04"
-python -m http.server 8000
-# Access: http://localhost:8000/login.html
-```
-
-With Node.js:
-```bash
-npx serve "Sky Way 14.04"
 ```
 
 ### First Access
